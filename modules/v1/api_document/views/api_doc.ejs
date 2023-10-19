@@ -1,0 +1,750 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <link href="https://unpkg.com/vuetify@1.0.17/dist/vuetify.min.css" type="text/css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" rel="stylesheet">
+    <link rel="shortcut icon" href="<%= GLOBALS.BASE_URL_WITHOUT_API + GLOBALS.LOGO%>">
+    <title>
+        <%= GLOBALS.APP_NAME %> API LIST</title>
+    <style type="text/css">
+        .medium-text {
+            font-size: 18px;
+            color: white;
+        }
+        
+        .js div#preloader {
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 999;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            background: #fff url('<%= GLOBALS.BASE_URL_WITHOUT_API %>api/public/logo/ripple.gif') no-repeat center center;
+        }
+    </style>
+</head>
+
+<body class="js">
+    <div id="preloader"></div>
+    <div id="app">
+        <v-app id="inspire">
+            <v-layout justify column>
+                <v-flex style="margin:10px auto 10px auto; padding:0px; text-align:center;" center right sm2 xs2 md2 lg2 xl2>
+                    <img src='<%= GLOBALS.S3_BUCKET_ROOT + GLOBALS.LOGO %>' width="120px"><br>
+                    <strong style="font-size:24px;"><%= GLOBALS.APP_NAME %> API LIST</strong><br><br>
+                    <v-alert :value="true" outline color="white" style="padding:5px;">
+                        <v-chip color="black" text-color="white">
+                            <v-avatar>
+                                <v-icon>bookmark</v-icon>
+                            </v-avatar><b>TOTAL {{messages.length}} APIs</b>
+                        </v-chip>
+                    </v-alert>
+                    <v-alert :value="true" outline color="white" style="padding:5px;">
+                        <v-chip color="black" text-color="white">
+                            <v-avatar>
+                                <v-icon>label_important</v-icon>
+                            </v-avatar><b>If Device Token not get, pass 0 only</b>
+                        </v-chip>
+                        <v-chip color="black" text-color="white">
+                            <v-avatar>
+                                <v-icon>label_important</v-icon>
+                            </v-avatar><b>Upload images on S3 bucket</b>
+                        </v-chip>
+                    </v-alert>
+                </v-flex>
+                <v-flex style="margin:0px auto; padding:0px;" center right sm2 xs2 md2 lg2 xl2>
+
+                    <div id="main1" style="margin:0px auto; position:sticky;">
+                        <table border="0" cellpadding="10" cellspacing="10" width="100%" style="background: linear-gradient(150deg, #121213 50%, #1a1c27) !important;color: #fff;font-weight: bold;">
+                            <tr>
+                                <td><b>Server URL </b></td>
+                                <td>==>> &nbsp;&nbsp;<b><%= GLOBALS.PORT_BASE_URL %>api/v1/</b></td>
+                            </tr>
+                            <tr>
+                                <td><b>Header Parameters </b></td>
+                                <td>==>> &nbsp;&nbsp;<b>api-key, token, accept-language</b></td>
+                            </tr>
+                            <tr>
+                                <td><b>api-key </b></td>
+                                <td>==>> &nbsp;&nbsp;<b><%= GLOBALS.API_KEY %></b></td>
+                            </tr>
+                            <tr>
+                                <td><b>KEY </b></td>
+                                <td>==>> &nbsp;&nbsp;<b><%= GLOBALS.KEY %></b></td>
+                            </tr>
+                            <tr>
+                                <td><b>IV </b></td>
+                                <td>==>> &nbsp;&nbsp;<b><%= GLOBALS.IV %></b></td>
+                            </tr>
+                        </table>
+                        <br> <br>
+                    </div>
+                </v-flex>
+                <v-flex style="margin:0px auto;" center right sm2 xs2 md2 lg2 xl2>
+                    <a target="_blank" href='/v1/api_document/user_list'>
+                        <v-btn color="blue-grey" class="white--text">
+                            USER LIST
+                            <v-icon right dark>people</v-icon>
+                        </v-btn>
+                    </a>
+                    <!-- <a target="_blank" href='/v1/api_document/code'>
+							<v-btn color="blue-grey" class="white--text">
+								CODE REFERENCE <v-icon right dark>code</v-icon>
+							</v-btn>
+						</a> -->
+                    <!-- <a target="_blank" href=''>
+                        <v-btn color="blue-grey" class="white--text">
+                            ENCRYPTION URL
+                            <v-icon right dark>lock</v-icon>
+                        </v-btn>
+                    </a> -->
+                </v-flex>
+
+                <v-expansion-panel popout>
+                    <v-expansion-panel-content v-for="(message, i) in messages" :key="i" hide-actions>
+                        <v-layout slot="header" align-center row spacer>
+                            <v-flex sm1 xs1 md1 lg1 xl1>
+                                <v-avatar slot="activator" size="36px">
+                                    <v-icon :color="message.color">{{ message.icon }}</v-icon>
+                                </v-avatar>
+                            </v-flex>
+                            <v-flex sm3 xs3 md3 lg3 xl3>
+                                <strong v-html="message.title"></strong>
+                                <v-chip v-if="message.meth" :color="`${message.color} lighten-4`" label small class="ml-0">
+                                    {{ message.meth }}
+                                </v-chip>
+                            </v-flex>
+                            <v-flex sm3 xs3 md3 lg3 xl3>
+                                <strong v-html="message.name"></strong><br>
+                                <span v-if="message.updated" style="color:orange">{{ message.updated }}</span>
+                                <span v-if="message.new_added" style="color:green"><span v-html="message.new_added"></span></span>
+                            </v-flex>
+                            <v-flex sm4 xs4 md4 lg4 xl4>
+                                <v-flex v-if="message.link" class="grey--text" ellipsis hidden-sm-and-down>
+                                    {{ message.link }}
+                                </v-flex>
+                                <v-flex class="grey--text" ellipsis hidden-sm-and-down>
+                                    <span v-if="message.imp" style="color:darkred">SHOW IMPORTANT NOTE INSIDE</span>
+                                </v-flex>
+                            </v-flex>
+                        </v-layout>
+                        <v-card dark>
+                            <v-container>
+                                <v-layout v-if="message.new_tag === '0'">
+                                    <v-flex xs12 align-end flexbox>
+                                        <v-alert v-if="message.new_added" :value="true" outline color="white" style="padding:5px;">
+                                            <v-chip color="green" text-color="white">
+                                                <v-avatar>
+                                                    <v-icon>fiber_new</v-icon>
+                                                </v-avatar> NEW
+                                            </v-chip>
+                                            <span v-html="message.new_added"></span>
+                                        </v-alert>
+                                        <v-alert v-if="message.updated" :value="true" outline color="white" style="padding:5px;">
+                                            <v-chip color="orange" text-color="white">
+                                                <v-avatar>
+                                                    <v-icon>update</v-icon>
+                                                </v-avatar> UPDATED
+                                            </v-chip>
+                                            <span>{{ message.updated }}</span>
+                                        </v-alert>
+                                        <v-alert :value="true" outline color="white" style="padding:5px;">
+                                            <v-chip color="teal" text-color="white">
+                                                <v-avatar>
+                                                    <v-icon>check_circle</v-icon>
+                                                </v-avatar> MANDATORY
+                                            </v-chip>
+                                            {{message.mandatory}}
+                                        </v-alert>
+                                        <v-alert :value="true" outline color="white" style="padding:5px;">
+                                            <v-chip outline color="#F0F4C3">
+                                                <v-avatar>
+                                                    <v-icon>check_circle</v-icon>
+                                                </v-avatar>OPTIONAL
+                                            </v-chip>
+                                            <span>{{ message.optional }}
+											</v-alert>
+											<v-alert v-if="message.link" :value="true" outline color="white" style="padding:5px;">
+												<v-chip color="light-green darken-2" text-color="white">
+													<v-avatar>
+														<v-icon>link</v-icon>
+													</v-avatar> LINK
+												</v-chip>
+												<span>{{ message.link }}
+											</v-alert>
+											<v-alert v-if="message.imp" :value="true" outline color="white" style="padding:5px;">
+												<v-chip color="red darken-2" text-color="white">
+													<v-avatar>
+														<v-icon>new_releases</v-icon>
+													</v-avatar> IMPORTANT
+												</v-chip>
+												<p v-html="message.imp"></p>
+											</v-alert>
+											<v-alert v-if="message.notes" :value="true" outline color="white" style="padding:5px;">
+												<v-chip color="blue lighten-1" text-color="white">
+													<v-avatar>
+														<v-icon>bookmark</v-icon>
+													</v-avatar> NOTES
+												</v-chip>
+												<span>{{ message.notes }}
+											</v-alert>
+											<v-alert v-if="message.example" :value="true" outline color="white" style="padding:5px;">
+												<v-chip color="red darken-2" text-color="white">
+													<v-avatar>
+														<v-icon>check_circle</v-icon>
+													</v-avatar> EXAMPLE
+												</v-chip>
+												<p v-html="message.example"></p>
+											</v-alert>
+											<v-layout style="margin-top:-4px">
+												<v-flex xs6 align-end flexbox>
+													<v-alert :value="true" outline color="yellow" icon="priority_high" style="padding:5px;">
+															<span class="grey--text">HEADER : {{ message.is_header }}, PUSH : {{ message.is_push }}</span><br>
+                                            <span>HEADER : {{ message.header }}</span>
+                                        </v-alert>
+                                    </v-flex>
+                                </v-layout>
+                                </v-flex>
+            </v-layout>
+            </v-container>
+            <v-card-actions>
+            </v-card-actions>
+            </v-card>
+            </v-expansion-panel-content>
+            </v-expansion-panel>
+            </v-layout>
+        </v-app>
+    </div>
+    <div id="asd"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/vuetify@1.0.17/dist/vuetify.min.js"></script>
+    <script src="https://unpkg.com/babel-polyfill/dist/polyfill.min.js"></script>
+    <script>
+        jQuery(document).ready(function($) {
+            $('#preloader').fadeOut('slow', function() {
+                $(this).remove();
+            });
+        });
+
+        var base_url = "<%= GLOBALS.PORT_BASE_URL %>api/v1/";
+        var base_url_without_api = "<%= GLOBALS.BASE_URL_WITHOUT_API %>";
+        let i = 1;
+
+        new Vue({
+            el: '#app',
+            data: () => ({
+                messages: [{
+                        new_tag: '1',
+                        color: 'teal',
+                        title: 'Auth API',
+                        icon: 'key',
+                    }, 
+                    // {
+                    //     new_tag: '0',
+                    //     color: 'blue',
+                    //     icon: 'person',
+                    //     title: i++ + ' : AUTH',
+                    //     name: 'Sign Up',
+                    //     meth: 'POST',
+                    //     link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/signup",
+                    //     mandatory: "fname,lname,email,password,dob,device_token,device_type,uuid",
+                    //     optional: "os_version,device_model,model_name,ip",
+                    //     is_header: "Yes",
+                    //     is_push: "NO",
+                    //     header: "api-key,accept-language",
+                    //     notes: "This api is used to Signup",
+                    //     example: '',
+                    //     imp: "",
+                    // }, 
+                    {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Log In',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/login",
+                        mandatory: "email,password, device_token,device_type,uuid",
+                        optional: "os_version,device_model,model_name,ip",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,accept-language",
+                        notes: "This api is used For Login",
+                        example: '{"email":"hello@gmail.com","password":"hello12","device_type":"I","device_token":"23232534356345"}',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Change Password',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/changepassword",
+                        mandatory: "old_password,new_password",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,token,accept-language",
+                        notes: "This api is used to Change Password",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Edit Profile',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/editprofile",
+                        mandatory: "",
+                        optional: "profile_image,fname,lname,email,phone,address",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to Edit Profile",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'About Us',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/getaboutus",
+                        mandatory: "",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,accept-language",
+                        notes: "This api is used to Show About Us Page",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Terms & Condition',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/getterms",
+                        mandatory: "",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,accept-language",
+                        notes: "This api is used to Show Terms & Conditions",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Privcay Policy',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/getpolicy",
+                        mandatory: "",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,accept-language",
+                        notes: "This api is used to Show Privacy Policy Page",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'FAQ',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/getfaqs",
+                        mandatory: "",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to Show FAQ",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Contact Us',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/contactus",
+                        mandatory: "email,subject,description",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to connect with admin",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'User Logout',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/logout",
+                        mandatory: "",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to Logout user",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'User Delete Account',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/deleteaccount",
+                        mandatory: "",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to delete user account",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'User forgot password',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/forgotpassword",
+                        mandatory: "email",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,accept-language",
+                        notes: "This api is used to forgot password",
+                        example: '',
+                        imp: "",
+                    },{
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Get Category List',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/getcategorylist",
+                        mandatory: "",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to get Category List",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Get Category Wise Product List',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/getcategoryproduct",
+                        mandatory: "",
+                        optional: "category_id",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to get Category wise product List",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Get Detail Product List',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/productdetails",
+                        mandatory: "id(Product Id)",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to get details product List",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Get Notification List',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/notificatiolist",
+                        mandatory: "",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to get Notification List",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Read all Notification',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/readnotification",
+                        mandatory: "",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to read all Notification",
+                        example: '',
+                        imp: "",
+                    },{
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Add to Cart Product',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/addtocart",
+                        mandatory: "id(product_id)",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to add to cart product",
+                        example: '',
+                        imp: "",
+                    },{
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Remove to Cart Product',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/removecart",
+                        mandatory: "id(product_id)",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to remove to cart product",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Deleted From Cart Product',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/deletefromcart",
+                        mandatory: "id(product_id)",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to delete From cart product",
+                        example: '',
+                        imp: "",
+                    },{
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Search Product',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/searchproduct",
+                        mandatory: "search",
+                        optional: "category_id,price_start,price_end",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to search product",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'View Cart',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/viewcart",
+                        mandatory: "",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to View Cart",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Confirm Order/Order Place',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/confirmorder",
+                        mandatory: "datetime",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to Place Order or Confirm Order",
+                        example: '{"datetime":"2023-10-15 15:20:00"}',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Upcoming Order',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/upcomingorder",
+                        mandatory: "",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to Upcoming Order",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Past Order',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/pastorder",
+                        mandatory: "",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to Past Order",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Order Details View',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/orderdetails",
+                        mandatory: "id(order_id)",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to Order details view",
+                        example: '',
+                        imp: "",
+                    }, {
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Cancel Order',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/cancelorder",
+                        mandatory: "id(order_id), reason, description",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to Cancel Order",
+                        example: '',
+                        imp: "",
+                    },{
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Add Or Remove From Favorite',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/addtofavoritermove",
+                        mandatory: "product_id",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to add or remove from favorite",
+                        example: '',
+                        imp: "",
+                    },{
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'CMS PAGES',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/cmsPage",
+                        mandatory: "tag(faq, about, policy, terms)",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to get cms pages ",
+                        example: '',
+                        imp: "",
+                    },{
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'image upload',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/Get_S3_Url",
+                        mandatory: "fileType, bucketFolderName(profileimage)",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "",
+                        notes: "This api is used to upload image ",
+                        example: '',
+                        imp: "",
+                    },{
+                        new_tag: '0',
+                        color: 'blue',
+                        icon: 'person',
+                        title: i++ + ' : AUTH',
+                        name: 'Add, Delete Product Add to cart',
+                        meth: 'POST',
+                        link: "<%= GLOBALS.PORT_BASE_URL %>api/v1/auth/cartwithquantity",
+                        mandatory: "id(product_id),qty, tag('remove','ok')",
+                        optional: "",
+                        is_header: "Yes",
+                        is_push: "NO",
+                        header: "api-key,Token,accept-language",
+                        notes: "This api is used to cart product",
+                        example: '',
+                        imp: "",
+                    },
+                ]
+            })
+        })
+    </script>
+</body>
+
+</html>
