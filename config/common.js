@@ -115,14 +115,18 @@ var Validate = {
     },
 
     genOrderId: function (order_id) { 
-       console.log("🚀 ~ order_id999999:", order_id)
        let orderId;
+       let num;
        if(order_id === '000'){
-         orderId =  'PO-' + (order_id) + 1 ;
-        console.log("🚀 ~ orderId77777777777:", orderId)
+        num = Number(order_id + 1);
+         orderId =  'PO-' + num;
        } else {
-        orderId =  'PO-' + (Number(order_id)) + 1 ;
-        console.log("🚀 ~ orderId7777777777555555555557:", orderId)
+         num = order_id.split("-")[1];
+        num = parseInt(num, 10); // Parse the string as an integer
+        num++; // Increment the integer
+        num = num.toString().padStart(order_id.split("-")[1].length, '0'); // Convert back to string with leading zeros
+        const new_order_id = order_id.split("-")[0] + '-' + num;
+        orderId = new_order_id;
        }
         
 

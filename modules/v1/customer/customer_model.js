@@ -668,7 +668,6 @@ deleteFromCart : function(request, callback){
                 let orderdetail;
                 con.query('SELECT id, order_id FROM tbl_order ORDER BY order_id DESC', (err, rows) => {
                     try {
-                        console.log("🚀 ~ data=============:", rows);
                         if (rows.length > 0) {
                              ordernum = common.genOrderId(rows[0].order_id);
                             // Use ordernum for further processing
@@ -687,47 +686,45 @@ deleteFromCart : function(request, callback){
                             tax: data.tax,
                             total_payout: data.total_payout,
                         }
-                        console.log("🚀 ~ orderdetail:", orderdetail)
-                    } catch (err) {
-                        console.log("🚀 ~ err:22222222222222222222222", err)
-                    }
-                });
 
-                asyncLoop(data.product, function (item, next){
-                    const ordededa = {
-                        user_id: request.user_id,
-                        order_id: ordernum,
-                        product_id: item.id,
-                        qty: item.quantity,
-                        price:item.price
-                    }
-                    console.log("🚀 ~ ordededa:", ordededa)
-                    con.query(`INSERT INTO tbl_order_detail SET ?`, ordededa, function (errx,resx) {                         
-                        next();
-                    })
-                });
-
-                con.query(`INSERT INTO tbl_order SET ?`,orderdetail,  function (err,result) { 
-                    if (!err && result.insertId > 0) {
-                        con.query(`UPDATE tbl_cart SET is_active=0, is_deleted=1 WHERE user_id='${request.user_id}' AND is_active=1 AND is_deleted=0`, function (err1,res1) {
-                            if (!err1 && res1.affectedRows > 0) {
-                                console.log("🚀 ~ res1:", res1)
-                                const insernoti = {
-                                    receiver_id: request.user_id,
-                                    title:'order',
-                                    message:`Your $`+(Math.round(data.total_payout * 100) / 100).toFixed(2)+` order has been successfully placed!` 
-                                }
-                                common.insertNotification(insernoti, function (notidat) {  
-                                    callback('1',{ keyword:'Your Order was successfully placed', components:{} },result)
+                        asyncLoop(data.product, function (item, next){
+                            const ordededa = {
+                                user_id: request.user_id,
+                                order_id: ordernum,
+                                product_id: item.id,
+                                qty: item.quantity,
+                                price:item.price
+                            }
+                            con.query(`INSERT INTO tbl_order_detail SET ?`, ordededa, function (errx,resx) {                         
+                                next();
+                            })
+                        });
+        
+                        con.query(`INSERT INTO tbl_order SET ?`,orderdetail,  function (err,result) { 
+                            if (!err && result.insertId > 0) {
+                                con.query(`UPDATE tbl_cart SET is_active=0, is_deleted=1 WHERE user_id='${request.user_id}' AND is_active=1 AND is_deleted=0`, function (err1,res1) {
+                                    if (!err1 && res1.affectedRows > 0) {
+                                        const insernoti = {
+                                            receiver_id: request.user_id,
+                                            title:'order',
+                                            message:`Your $`+(Math.round(data.total_payout * 100) / 100).toFixed(2)+` order has been successfully placed!` 
+                                        }
+                                        common.insertNotification(insernoti, function (notidat) {  
+                                            callback('1',{ keyword:'Your Order was successfully placed', components:{} },result)
+                                        })
+                                    } else {
+                                        callback('0',{ keyword:'rest_key_failed', components:{} },null)
+                                    }
                                 })
                             } else {
                                 callback('0',{ keyword:'rest_key_failed', components:{} },null)
                             }
                         })
-                    } else {
-                        callback('0',{ keyword:'rest_key_failed', components:{} },null)
+                    } catch (err) {
+                        console.log("🚀 ~ err:", err)
                     }
-                })
+                });
+               
             } else {
                 callback('0',{ keyword:'rest_key_failed', components:{} },null)
             }

@@ -433,6 +433,7 @@ router.post('/confirmorder', function (req, res) {
 
         if (middleware.checkValidationRules(request, res, rules, messages, {})) {
             request.user_id = req.user_id
+            console.log("🚀 ~ request.user_id:", request.user_id)
             customer_model.confirmOrder(request, function (responsecode, responsemsg, responsedata) {
                 middleware.sendresponse(req, res, 200, responsecode, responsemsg, responsedata)
             })
