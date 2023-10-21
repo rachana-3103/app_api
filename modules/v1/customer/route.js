@@ -32,7 +32,7 @@ router.post('/login', function (req, res) {
             password:'required',
         }
         const messages = {
-            'required': req.language.required
+            // 'required': req.language.required
         }
 
         if (middleware.checkValidationRules(request, res, rules, messages, {})) {
@@ -445,7 +445,7 @@ router.post('/upcomingorder', function (req, res) {
     middleware.decryption(req, function (request) {
         var rules = { }
         const messages = {
-            'required':req.language.required
+            // 'required':req.language.required
         }
 
         if (middleware.checkValidationRules(request, res, rules, messages, {})) {
