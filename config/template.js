@@ -225,7 +225,7 @@ exports.verifyEmail = function(result,callback)
                                               </tr>
                                             </tbody>
                                           </table>
-                                          <table border="0" cellpadding="0" cellspacing="0" class="kmImageBlock" width="100%" style="border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;min-width:100%">
+                                          <table border="0" cellpadding="0" cellspacing="0" class="kmImageBlock" width="50%" style="border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;min-width:50%">
                                             <tbody class="kmImageBlockOuter">
                                               <tr>
                                                 <td class="kmImageBlockInner" style="border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;padding:9px;" valign="top">
@@ -236,7 +236,7 @@ exports.verifyEmail = function(result,callback)
                                                         background: linear-gradient(to right, #fff 0%, #fff 100%) !important;">
                                                           <!-- Your Logo -->
     
-                                                          <img align="center" alt="Logo" class="kmImage" src="" width="50" style="border:0;height:"50";line-height:100%;outline:none;text-decoration:none;padding-bottom:0;display:inline;vertical-align:bottom;max-width:199px;" />
+                                                          <img align="center" alt="Logo" class="kmImage" src="" width="50px" style="border:0;height:"50px";line-height:100%;outline:none;text-decoration:none;padding-bottom:0;display:inline;vertical-align:bottom;max-width:199px;" />
                                                         </td>
                                                       </tr>
                                                     </tbody>
@@ -259,7 +259,6 @@ exports.verifyEmail = function(result,callback)
                                                           <p style="margin:0;padding-bottom:1em"><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size: 16px;">Hi <strong>${result.fname}</strong>,</span></span></p>
                                                           <p style="margin:0;padding-bottom:1em">Welcome to ${GLOBALS.APP_NAME}! Thank you for joining ${GLOBALS.APP_NAME} community.</p>
                                                           <p style="margin:0;padding-bottom:1em">Please click on the link below to Verify Your Account : </p>
-                                                          
                                                           <p style="text-align: center;margin:0;padding-bottom:1em">
                                                             <span style="font-family:arial,helvetica,sans-serif;">
                                                               <span style="font-size: 16px;">
@@ -267,9 +266,7 @@ exports.verifyEmail = function(result,callback)
                                                               </span>
                                                             </span>
                                                           </p>
-
                                                           <p style="margin:0;padding-bottom:1em"> If you did not request this change, please let us know by replying to this email.</p>
-
                                                           <p style="margin:0;padding-bottom:1em"> </p>
                                                           <p style="margin:0;padding-bottom:1em"><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size: 16px;">Kind Regards,</span></span></p>
                                                           <p style="margin:0;padding-bottom:0"><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size: 16px;">${GLOBALS.APP_NAME}</span></span></p>
@@ -526,7 +523,7 @@ exports.forgotPassword = function(result,callback)
                                               </tr>
                                             </tbody>
                                           </table>
-                                          <table border="0" cellpadding="0" cellspacing="0" class="kmImageBlock" width="20%" style="border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;min-width:20%">
+                                          <table border="0" center="1" cellpadding="0" cellspacing="0" class="kmImageBlock" width="50%" style="border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;min-width:50%">
                                             <tbody class="kmImageBlockOuter">
                                               <tr>
                                                 <td class="kmImageBlockInner" style="border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;padding:9px;" valign="top">
@@ -561,10 +558,7 @@ exports.forgotPassword = function(result,callback)
                                                           <p style="margin:0;padding-bottom:1em">Please Login via Below Mention Temporary Password, Please Change your Password After Login</p>
                                                           <p style="margin:0;padding-bottom:1em">Email Address : ${result.email} </p>
                                                           <p style="margin:0;padding-bottom:1em">Temporary Password : ${result.password} </p>
-                                                          
-
                                                           <p style="margin:0;padding-bottom:1em"> If you did not request this change, please let us know by replying to this email.</p>
-
                                                           <p style="margin:0;padding-bottom:1em"> </p>
                                                           <p style="margin:0;padding-bottom:1em"><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size: 16px;">Kind Regards,</span></span></p>
                                                           <p style="margin:0;padding-bottom:0"><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size: 16px;">${GLOBALS.APP_NAME}</span></span></p>
