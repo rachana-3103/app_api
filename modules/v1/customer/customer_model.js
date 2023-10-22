@@ -661,74 +661,80 @@ deleteFromCart : function(request, callback){
 
 
     confirmOrder: function (request, callback) { 
-        Auth.viewCart(request, function (code, msg,data) { 
-            if (code != 0 && code != 2) {
-
-                let ordernum;
-                let orderdetail;
-                con.query('SELECT id, order_id FROM tbl_order ORDER BY order_id DESC', (err, rows) => {
-                    try {
-                        if (rows.length > 0) {
-                             ordernum = common.genOrderId(rows[0].order_id);
-                            // Use ordernum for further processing
-                        } else {
-                            ordernum = common.genOrderId("000") ;
-                        }
-                         orderdetail = {
-                            user_id: request.user_id,
-                            order_id: ordernum,
-                            product_id: (data.product.map(e => e.id)).toString(),
-                            deliver_datetime: request.datetime,
-                            address: data.address,
-                            status: 'Order Placed',
-                            payment_surcharge: data.payment_surcharge,
-                            shipping: data.shipping_charge,
-                            tax: data.tax,
-                            total_payout: data.total_payout,
-                        }
-
-                        asyncLoop(data.product, function (item, next){
-                            const ordededa = {
+        try {
+            Auth.viewCart(request, function (code, msg,data) { 
+                if (code != 0 && code != 2) {
+    
+                    let ordernum;
+                    let orderdetail;
+                    con.query('SELECT id, order_id FROM tbl_order ORDER BY order_id DESC', (err, rows) => {
+                        try {
+                            if (rows.length > 0) {
+                                 ordernum = common.genOrderId(rows[0].order_id);
+                                // Use ordernum for further processing
+                            } else {
+                                ordernum = common.genOrderId("000") ;
+                            }
+                             orderdetail = {
                                 user_id: request.user_id,
                                 order_id: ordernum,
-                                product_id: item.id,
-                                qty: item.quantity,
-                                price:item.price
+                                product_id: (data.product.map(e => e.id)).toString(),
+                                deliver_datetime: request.datetime,
+                                address: data.address,
+                                status: 'Order Placed',
+                                payment_surcharge: data.payment_surcharge,
+                                shipping: data.shipping_charge,
+                                tax: data.tax,
+                                total_payout: data.total_payout,
                             }
-                            con.query(`INSERT INTO tbl_order_detail SET ?`, ordededa, function (errx,resx) {                         
-                                next();
-                            })
-                        });
-        
-                        con.query(`INSERT INTO tbl_order SET ?`,orderdetail,  function (err,result) { 
-                            if (!err && result.insertId > 0) {
-                                con.query(`UPDATE tbl_cart SET is_active=0, is_deleted=1 WHERE user_id='${request.user_id}' AND is_active=1 AND is_deleted=0`, function (err1,res1) {
-                                    if (!err1 && res1.affectedRows > 0) {
-                                        const insernoti = {
-                                            receiver_id: request.user_id,
-                                            title:'order',
-                                            message:`Your $`+(Math.round(data.total_payout * 100) / 100).toFixed(2)+` order has been successfully placed!` 
-                                        }
-                                        common.insertNotification(insernoti, function (notidat) {  
-                                            callback('1',{ keyword:'Your Order was successfully placed', components:{} },result)
-                                        })
-                                    } else {
-                                        callback('0',{ keyword:'rest_key_failed', components:{} },null)
-                                    }
+    
+                            asyncLoop(data.product, function (item, next){
+                                const ordededa = {
+                                    user_id: request.user_id,
+                                    order_id: ordernum,
+                                    product_id: item.id,
+                                    qty: item.quantity,
+                                    price:item.price
+                                }
+                                con.query(`INSERT INTO tbl_order_detail SET ?`, ordededa, function (errx,resx) {                         
+                                    next();
                                 })
-                            } else {
-                                callback('0',{ keyword:'rest_key_failed', components:{} },null)
-                            }
-                        })
-                    } catch (err) {
-                        console.log("🚀 ~ err:", err)
-                    }
-                });
-               
-            } else {
-                callback('0',{ keyword:'rest_key_failed', components:{} },null)
-            }
-        })
+                            });
+            
+                            con.query(`INSERT INTO tbl_order SET ?`,orderdetail,  function (err,result) { 
+                                if (!err && result.insertId > 0) {
+                                    con.query(`UPDATE tbl_cart SET is_active=0, is_deleted=1 WHERE user_id='${request.user_id}' AND is_active=1 AND is_deleted=0`, function (err1,res1) {
+                                        if (!err1 && res1.affectedRows > 0) {
+                                            const insernoti = {
+                                                receiver_id: request.user_id,
+                                                title:'order',
+                                                message:`Your $`+(Math.round(data.total_payout * 100) / 100).toFixed(2)+` order has been successfully placed!` 
+                                            }
+                                            common.insertNotification(insernoti, function (notidat) {  
+                                                callback('1',{ keyword:'Your Order was successfully placed', components:{} },result)
+                                            })
+                                        } else {
+                                            callback('0',{ keyword:'rest_key_failed', components:{} },null)
+                                        }
+                                    })
+                                } else {
+                                    callback('0',{ keyword:'rest_key_failed', components:{} },null)
+                                }
+                            })
+                        } catch (err) {
+                            console.log("🚀 ~ err:", err)
+                        }
+                    });
+                   
+                } else {
+                    callback('0',{ keyword:'rest_key_failed', components:{} },null)
+                }
+            })
+        } catch (error) {
+            console.log("🚀 ~ error:", error)
+            
+        }
+       
     },
 
     upcomingOrder: function (request, callback) { 

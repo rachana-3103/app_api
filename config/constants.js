@@ -1,5 +1,5 @@
 let Globals = {
-    'APP_NAME':'Ballina',
+    'APP_NAME':'Ballina Farm Fresh',
     'API_KEY':process.env.API_KEY,
     'KEY':process.env.KEY,
     'IV':process.env.IV,
