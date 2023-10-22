@@ -236,7 +236,7 @@ exports.verifyEmail = function(result,callback)
                                                         background: linear-gradient(to right, #fff 0%, #fff 100%) !important;">
                                                           <!-- Your Logo -->
     
-                                                          <img align="center" alt="Logo" class="kmImage" src="" width="50px" style="border:0;height:"50px";line-height:100%;outline:none;text-decoration:none;padding-bottom:0;display:inline;vertical-align:bottom;max-width:199px;" />
+                                                          <img align="center" alt="Logo" class="kmImage" src="http://3.26.203.80/api/logo192.png" width="50" style="border:0;height:"50";line-height:100%;outline:none;text-decoration:none;padding-bottom:0;display:inline;vertical-align:bottom;max-width:199px;" />
                                                         </td>
                                                       </tr>
                                                     </tbody>
@@ -523,7 +523,7 @@ exports.forgotPassword = function(result,callback)
                                               </tr>
                                             </tbody>
                                           </table>
-                                          <table border="0" center="1" cellpadding="0" cellspacing="0" class="kmImageBlock" width="50%" style="border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;min-width:50%">
+                                          <table border="0" align="center" cellpadding="0" cellspacing="0" class="kmImageBlock" width="50%" style="border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;min-width:50%">
                                             <tbody class="kmImageBlockOuter">
                                               <tr>
                                                 <td class="kmImageBlockInner" style="border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;padding:9px;" valign="top">
