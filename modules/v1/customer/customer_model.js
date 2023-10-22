@@ -288,7 +288,7 @@ updateUserInfo: function(id,params, callback){
                         Auth.userdetails(result[0].id, function(response) {
                             response.password = radnpas
                             emailTemplate.forgotPassword(response, function (verifytemplate) {
-                                common.send_email("Ballina's Farm Fresh, Forgot Your Password", response.email, verifytemplate, function (isSend) { 
+                                common.send_email("Ballina Farm Fresh: Forgot Your Password", response.email, verifytemplate, function (isSend) { 
                                     callback('1', {
                                         keyword: "Please Check your Email",
                                         components: {}
