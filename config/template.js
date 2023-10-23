@@ -236,7 +236,7 @@ exports.verifyEmail = function(result,callback)
                                                         background: linear-gradient(to right, #fff 0%, #fff 100%) !important;">
                                                           <!-- Your Logo -->
     
-                                                          <img align="center" alt="Logo" class="kmImage" src="http://3.26.203.80/api/logo192.png" width="50" style="border:0;height:"50";line-height:100%;outline:none;text-decoration:none;padding-bottom:0;display:inline;vertical-align:bottom;max-width:199px;" />
+                                                          <img align="center" alt="Logo" class="kmImage" src="http://13.238.15.59/api/logo192.png" width="50" style="border:0;height:"50";line-height:100%;outline:none;text-decoration:none;padding-bottom:0;display:inline;vertical-align:bottom;max-width:199px;" />
                                                         </td>
                                                       </tr>
                                                     </tbody>
@@ -534,7 +534,7 @@ exports.forgotPassword = function(result,callback)
                                                         background: linear-gradient(to right, #fff 0%, #fff 100%) !important;">
                                                           <!-- Your Logo -->
     
-                                                          <img align="center" alt="Logo" class="kmImage" src="http://3.26.203.80/api/logo192.png" width="10px" style="border:0;height:"15px";line-height:50%;outline:none;text-decoration:none;padding-bottom:0;display:inline;vertical-align:bottom;max-width:199px;" />
+                                                          <img align="center" alt="Logo" class="kmImage" src="http://13.238.15.59/api/logo192.png" width="10px" style="border:0;height:"15px";line-height:50%;outline:none;text-decoration:none;padding-bottom:0;display:inline;vertical-align:bottom;max-width:199px;" />
                                                         </td>
                                                       </tr>
                                                     </tbody>
