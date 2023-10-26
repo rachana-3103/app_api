@@ -738,12 +738,14 @@ deleteFromCart : function(request, callback){
     },
 
     upcomingOrder: function (request, callback) { 
-        con.query(`SELECT date(inserted_at) as date from tbl_order where user_id = '${request.user_id}' and is_active=1 and is_deleted=0 AND date(deliver_datetime) > CURDATE() group by date(inserted_at) ORDER BY inserted_at DESC`, function (err,result) { 
+        con.query(`SELECT date(inserted_at) as date from tbl_order where user_id = '${request.user_id}' and is_active=1 and is_deleted=0 AND inserted_at > CURDATE() group by date(inserted_at) ORDER BY inserted_at DESC`, function (err,result) { 
             if (!err) {
+                console.log("🚀 ~ result:", result)
                 if (result[0] != undefined) {
                     var xyz = []
                     asyncLoop(result, function (item, next){
                         con.query(`select o.id, o.order_id, o.total_payout, o.status, DATE_FORMAT(o.deliver_datetime, '%d %b, %Y %h:%i %p') as deliver_datetime, o.product_id, DATE_FORMAT(o.inserted_at, '%d %b, %Y %h:%i %p') as order_date from tbl_order o where o.user_id='${request.user_id}' and date(o.inserted_at) = '${item.date}' AND o.is_active=1 and o.is_deleted=0 ORDER BY order_id DESC`, function (err1,res1) { 
+                            console.log("🚀 ~ res1:", res1)
                             item.orderDate = res1
                             xyz.push(res1)
                             next();
