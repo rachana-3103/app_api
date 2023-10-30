@@ -780,7 +780,11 @@ deleteFromCart : function(request, callback){
     },
 
     pastOrder: function (request, callback) { 
-        con.query(`SELECT date(inserted_at) as date from tbl_order where user_id = '${request.user_id}' and is_active=1 and is_deleted=0 AND date(deliver_datetime) < CURDATE() group by date(inserted_at) ORDER BY date(inserted_at) DESC`, function (err,result) { 
+        con.query(
+            `SELECT date(inserted_at) as date from tbl_order 
+            where user_id = '${request.user_id}' and is_active=1
+             and is_deleted=0 AND inserted_at < CURDATE() 
+             group by date(inserted_at) ORDER BY inserted_at DESC`, function (err,result) { 
             if (!err) {
                 if (result[0] != undefined) {
                     var xyz = []
