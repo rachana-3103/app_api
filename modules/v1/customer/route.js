@@ -10,8 +10,9 @@ router.post('/signup', function (req, res) {
             fname:'required',
             lname:'required',
             email:'required',
-            password:'required',
-            dob:'required'
+            phone:'required',
+            address:'required',
+            business_name:'required'
         }
         const messages = {
             'required':req.language.required
@@ -42,6 +43,7 @@ router.post('/login', function (req, res) {
         }
     })
 })
+
 
 router.post('/verifyaccount/:token', function (req, res) { 
     middleware.decryption(req, function (request) {

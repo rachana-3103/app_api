@@ -115,49 +115,111 @@ var Auth = {
     // },
 
     signupCustomer: function (request, callback) {
-        Auth.checkUniqueFields('', request, function (uniquecode, uniquemsg, isUnique) {
-            if (isUnique) {
-                var customer = {
-                    fname: request.fname,
-                    lname: request.lname,
-                    email: request.email,
-                    dob: request.dob,
-                    password: cryptoLib.encrypt(JSON.stringify(request.password), shaKey, GLOBALS.IV),
-                    verify_token: common.generateToken()
-                };
-
-                con.query(`INSERT INTO tbl_user SET ?`, customer, function (err, result, fields) {
-                    if (!err) {
-                        request.user_id = result.insertId;
-                        common.checkUpdateDeviceInfo(result.insertId, request, function () {
-                            Auth.userdetails(result.insertId, function (userprofile, err) {
-                                common.generateSessionCode(result.insertId, function (Token) {
-                                    userprofile.url = `http://localhost/test.php?token=` + userprofile.verify_token
-                                    emailTemplate.verifyEmail(userprofile, function (verifytemplate) {
-                                        common.send_email("GRID MASTER, VERIFY YOUR ACCOUNT", userprofile.email, verifytemplate, function (isSend) {
-
-                                            delete userprofile.Token
-                                            delete userprofile.password
-                                            callback('1', {
-                                                keyword: 'rest_keywords_user_phone_signup_success_otp_sent',
-                                                components: {}
-                                            }, userprofile);
-                                        })
+            Auth.checkUniqueFields('', request, function (uniquecode, uniquemsg, isUnique) {
+                if (isUnique) {
+                    try {
+                        con.query(`SELECT * from tbl_user WHERE email = '${request.email}' and is_deleted='0'`, function (err,result) { 
+                            if (!err) {
+                                if (result[0] != undefined) {
+                                    callback('0',{ keyword:'Customer Already Registed with this email', components:{} },null)
+                                } else {
+                                    var randtoken = require('rand-token').generator();
+                                    var randgen = randtoken.generate(8, "0123456789abcdefghijklnmopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+                                    const inersat = {
+                                        fname: request.fname,
+                                        lname: request.lname,
+                                        email: request.email,
+                                        phone: request.phone,
+                                        address: request.address,
+                                        password: randgen,
+                                        business_name: request.business_name,
+                                        is_verify:1
+                                    }
+                                    con.query(`INSERT INTO tbl_user set ?`, inersat, function (err1,res1) { 
+                                        if (!err1 && res1.insertId > 0) {
+                                            const deviceinfo= {
+                                                user_id: res1.insertId,
+                                                token: 'gkuygkuyfgywugf',
+                                                device_type:'A',
+                                                device_token:'dasdasda4234234'
+                                            }
+                                            con.query(`INSERT INTO tbl_user_deviceinfo SET ?`,deviceinfo,  function (err2,res2) { 
+                                                if (!err2 && res2.insertId > 0) {
+                                                    Auth.userdetails(res1.insertId, function (DataUser) { 
+                                                        emailTemplate.registerEmail(DataUser, function (verifytemplate) {
+                                                            common.send_email("Ballina Farm Fresh: New User Credentials", DataUser.email, verifytemplate, function (isSend) {
+                                                                callback('1',{ keyword:'rest_success', components:{} },[])
+                                                            })
+                                                        })
+                                                    })
+                                                } else {
+                                                    callback('0',{ keyword:'rest_key_failed', components:{} },null)
+                                                }
+                                            })
+                                        } else {
+                                            callback('0',{ keyword:'rest_key_failed', components:{} },null)
+                                        }
                                     })
+                                }
+                            } else {
+                                callback('0',{ keyword:'rest_key_failed', components:{} },null)
+                            }
+                        })
+                } catch (error) {
+                    console.log(error);
+                }
+                } else {
+                    callback(uniquecode, uniquemsg, null);
+                }
+            });
+        
+       
+    },
+
+    checkLogin: function (request, callback) {
+        con.query(`SELECT * FROM tbl_user WHERE email = '${request.email}' AND is_active = 1 AND is_deleted = 0`, function (err, result) {
+            if (!err) {
+                if (result.length > 0) {
+                    if (result[0].is_verify != 0) {
+
+                        if (result[0].password == request.password) {
+                            common.checkUpdateDeviceInfo(result[0].id, request, function () {
+                                Auth.userdetails(result[0].id, function (userprofile) {
+                                    common.generateSessionCode(result[0].id, function (Token) {
+                                        delete userprofile.password
+					userprofile.token = Token
+                                        callback('1', {
+                                            keyword: 'Signin Success',
+                                            components: {}
+                                        }, userprofile);
+                                    });
                                 });
                             });
-                        });
+                        } else {
+                            callback('0', {
+                                keyword: 'rest_wrong_login_password',
+                                components: {}
+                            }, null)
+                        }
                     } else {
                         callback('0', {
-                            keyword: 'rest_keywords_user_signup_failed',
+                            keyword: 'rest_keyword_verify_accoun',
                             components: {}
-                        }, null);
+                        }, null)
                     }
-                });
+                } else {
+                    callback('0', {
+                        keyword: 'rest_wrong_login_emailphone',
+                        components: {}
+                    }, null)
+                }
             } else {
-                callback(uniquecode, uniquemsg, null);
+                callback('0', {
+                    keyword: 'rest_keyword_failed',
+                    components: {}
+                }, null)
             }
-        });
+        })
     },
 
     checkLogin: function (request, callback) {
