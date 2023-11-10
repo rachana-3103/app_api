@@ -266,6 +266,12 @@ exports.verifyEmail = function(result,callback)
                                                               </span>
                                                             </span>
                                                           </p>
+
+                                                          <a href="https://apps.apple.com/us/app/ballina-farm-fresh/id6470903718">
+                                                          <img align="center" alt="ios"  src="http://13.238.15.59/api/App.png" width="30%" height="50%"/></a>
+                                                          <a href="https://play.google.com/store/apps/details?id=com.app.balinas_veg_shop&pcampaignid=web_share">
+                                                          <img align="center" alt="android"  src="http://13.238.15.59/api/google.png" width="34%" height="50%" /></a>
+
                                                           <p style="margin:0;padding-bottom:1em"> If you did not request this change, please let us know by replying to this email.</p>
                                                           <p style="margin:0;padding-bottom:1em"> </p>
                                                           <p style="margin:0;padding-bottom:1em"><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size: 16px;">Kind Regards,</span></span></p>
@@ -559,6 +565,11 @@ exports.registerEmail = function(result,callback)
                                                           <p style="margin:0;padding-bottom:1em">Your Email : ${result.email} </p>
                                                           <p style="margin:0;padding-bottom:1em">Your Password : ${result.password} </p>
 
+                                                          <a href="https://apps.apple.com/us/app/ballina-farm-fresh/id6470903718">
+                                                          <img align="center" alt="ios"  src="http://13.238.15.59/api/App.png" width="30%" height="50%"/></a>
+                                                          <a href="https://play.google.com/store/apps/details?id=com.app.balinas_veg_shop&pcampaignid=web_share">
+                                                          <img align="center" alt="android"  src="http://13.238.15.59/api/google.png" width="34%" height="50%" /></a>
+
                                                           <p style="margin:0;padding-bottom:1em"> If you did not request this change, please let us know by replying to this email.</p>
 
                                                           <p style="margin:0;padding-bottom:1em"> </p>
@@ -851,6 +862,12 @@ exports.forgotPassword = function(result,callback)
                                                           <p style="margin:0;padding-bottom:1em">Please Login via Below Mention Temporary Password, Please Change your Password After Login</p>
                                                           <p style="margin:0;padding-bottom:1em">Email Address : ${result.email} </p>
                                                           <p style="margin:0;padding-bottom:1em">Temporary Password : ${result.password} </p>
+
+                                                          <a href="https://apps.apple.com/us/app/ballina-farm-fresh/id6470903718">
+                                                          <img align="center" alt="ios"  src="http://13.238.15.59/api/App.png" width="30%" height="50%"/></a>
+                                                          <a href="https://play.google.com/store/apps/details?id=com.app.balinas_veg_shop&pcampaignid=web_share">
+                                                          <img align="center" alt="android"  src="http://13.238.15.59/api/google.png" width="34%" height="50%" /></a>
+                                                          
                                                           <p style="margin:0;padding-bottom:1em"> If you did not request this change, please let us know by replying to this email.</p>
                                                           <p style="margin:0;padding-bottom:1em"> </p>
                                                           <p style="margin:0;padding-bottom:1em"><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size: 16px;">Kind Regards,</span></span></p>
