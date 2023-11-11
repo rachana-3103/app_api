@@ -869,9 +869,9 @@ exports.forgotPassword = function(result,callback)
 <tr>
 <td>
                                                           <a href="https://apps.apple.com/us/app/ballina-farm-fresh/id6470903718" title="">
-                                                          <img height="55px" src="http://13.238.15.59/api/App.png" style="padding:0px;border:0px solid transparent;height:55px;width:159px" width="159" class="CToWUd" data-bit="iit" /></a>
+                                                          <img  src="http://13.238.15.59/api/App.png" style="border:0px solid transparent;height:50px;width:159px" data-bit="iit" /></a>
                                                           <a href="https://play.google.com/store/apps/details?id=com.app.balinas_veg_shop&pcampaignid=web_share" title="" target="_blank">
-                                                          <img height="100px" src="http://13.238.15.59/api/google.png" style="padding:0px;border:0px solid transparent;height:58px;width:168px" width="160" class="CToWUd" data-bit="iit"></a>
+                                                          <img  src="http://13.238.15.59/api/google.png" style="border:0px solid transparent;height:58px;width:168px" data-bit="iit"></a>
 </td>
 </tr>
 <tr>
