@@ -847,6 +847,8 @@ exports.forgotPassword = function(result,callback)
                                               </tr>
                                             </tbody>
                                           </table>
+
+
                                           <table border="0" cellpadding="0" cellspacing="0" class="kmTextBlock" width="100%" style="border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0">
                                             <tbody class="kmTextBlockOuter">
                                               <tr>
@@ -862,12 +864,18 @@ exports.forgotPassword = function(result,callback)
                                                           <p style="margin:0;padding-bottom:1em">Please Login via Below Mention Temporary Password, Please Change your Password After Login</p>
                                                           <p style="margin:0;padding-bottom:1em">Email Address : ${result.email} </p>
                                                           <p style="margin:0;padding-bottom:1em">Temporary Password : ${result.password} </p>
-
+</td>
+</tr>
+<tr>
+<td>
                                                           <a href="https://apps.apple.com/us/app/ballina-farm-fresh/id6470903718" title="">
-                                                          <img height="55" src="http://13.238.15.59/api/App.png" style="padding:0px;border:0px solid transparent;height:55px;width:159px" width="159" class="CToWUd" data-bit="iit" /></a>
+                                                          <img height="55px" src="http://13.238.15.59/api/App.png" style="padding:0px;border:0px solid transparent;height:55px;width:159px" width="159" class="CToWUd" data-bit="iit" /></a>
                                                           <a href="https://play.google.com/store/apps/details?id=com.app.balinas_veg_shop&pcampaignid=web_share" title="" target="_blank">
-                                                          <img height="55" src="http://13.238.15.59/api/google.png" style="padding:0px;border:0px solid transparent;height:58px;width:168px" width="160" class="CToWUd" data-bit="iit"></a>
-
+                                                          <img height="100px" src="http://13.238.15.59/api/google.png" style="padding:0px;border:0px solid transparent;height:58px;width:168px" width="160" class="CToWUd" data-bit="iit"></a>
+</td>
+</tr>
+<tr>
+                                                        <td class="kmTextContent" valign="top" style="border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;color:#000;font-family:Helvetica, Arial;font-size:14px;line-height:150%;text-align:left;padding-top:9px;padding-bottom:9px;padding-left:18px;padding-right:18px;">
                                                           <p style="margin:0;padding-bottom:1em"> If you did not request this change, please let us know by replying to this email.</p>
                                                           <p style="margin:0;padding-bottom:1em"> </p>
                                                           <p style="margin:0;padding-bottom:1em"><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size: 16px;">Kind Regards,</span></span></p>
