@@ -863,10 +863,10 @@ exports.forgotPassword = function(result,callback)
                                                           <p style="margin:0;padding-bottom:1em">Email Address : ${result.email} </p>
                                                           <p style="margin:0;padding-bottom:1em">Temporary Password : ${result.password} </p>
 
-                                                          <a href="https://apps.apple.com/us/app/ballina-farm-fresh/id6470903718">
-                                                          <img align="center" alt="ios"  src="http://13.238.15.59/api/App.png"/></a>
-                                                          <a href="https://play.google.com/store/apps/details?id=com.app.balinas_veg_shop&pcampaignid=web_share">
-                                                          <img align="center" alt="android"  src="http://13.238.15.59/api/google.png"/></a>
+                                                          <a href="https://apps.apple.com/us/app/ballina-farm-fresh/id6470903718" title="">
+                                                          <img height="55" src="http://13.238.15.59/api/App.png" style="padding:0px;border:0px solid transparent;height:55px;width:159px" width="159" class="CToWUd" data-bit="iit" /></a>
+                                                          <a href="https://play.google.com/store/apps/details?id=com.app.balinas_veg_shop&pcampaignid=web_share" title="" target="_blank">
+                                                          <img height="55" src="http://13.238.15.59/api/google.png" style="padding:0px;border:0px solid transparent;height:58px;width:168px" width="160" class="CToWUd" data-bit="iit"></a>
 
                                                           <p style="margin:0;padding-bottom:1em"> If you did not request this change, please let us know by replying to this email.</p>
                                                           <p style="margin:0;padding-bottom:1em"> </p>
